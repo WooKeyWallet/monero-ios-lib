@@ -114,6 +114,9 @@ It will not create 'fat' lmdb static library. Do it manually:
 $ cd External/monero-gui/monero
 $ lipo -create lib-armv7/liblmdb.a lib-x86_64/liblmdb.a lib-armv8-a/liblmdb.a -output lib-ios/liblmdb.a
 ```
+## Thanks
+
+Thanks to Bakhtiyor K. in Uzbekistan for helping us during the development process.
 
 ## Donating
 
