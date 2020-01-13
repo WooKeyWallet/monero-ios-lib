@@ -44,6 +44,10 @@ $ mv iOS-IOKit-Runtime-Headers /usr/local/include/IOKit
 ```bash
 $ xcode-select --install
 $ sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+cd #your Xcode.app#
+sudo cp ./Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/vmmeter.h ./Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/sys/
+sudo cp ./Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/netinet/udp_var.h ./Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/netinet/
+sudo cp ./Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/netinet/ip_var.h ./Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/netinet/
 ```
 
 #### Other headers
@@ -57,63 +61,16 @@ $ mkdir /usr/local/include/netinet
 $ cp /usr/include/netinet/{udp_var,ip_var}.h /usr/local/include/netinet
 ```
 
-### Build Monero in CakeWallet
+### Build Monero
 
 #### Checkout
 
 ```bash
-$ git clone --branch release-3.1.5 https://github.com/fotolockr/CakeWallet.git
-$ cd CakeWallet
+$ git clone https://github.com/WooKeyWallet/monero-ios-lib.git
+$ cd ./monero-ios-lib
+$ bash ./build.sh
 ```
 
-#### Build shared libraries
-
-Install and build util dependencies:
-
-```bash
-$ ./install_utils_deps.sh
-```
-
-#### Build monero
-
-There is mistype in `CWMonero/install_monero.sh` script, line 5 should be updated to:
-
-```
-EXTERNAL_UTILS_DIR_PATH="$SOURCE_DIR/../SharedExternal"
-```
-
-Run change dir to CWMonero and run `install_monero.sh`:
-
-```bash
-$ cd CWMonero/
-$ ./install_monero.sh
-```
-
-It will build libsodium, but will fail to build monero because git submodules will be not initialized by script. Do it manually:
-
-```bash
-$ cd External/monero-gui/monero
-$ git submodule update --recursive --init
-```
-
-Back to CWMonero dir:
-
-```bash
-$ cd ../../../
-```
-
-Run `install_monero.sh` again with custom flags:
-
-```bash
-$ env CXX_FLAGS='-Wno-error=user-defined-warnings' CFLAGS='-Wno-error=user-defined-warnings' ./install_monero.sh
-```
-
-It will not create 'fat' lmdb static library. Do it manually:
-
-```bash
-$ cd External/monero-gui/monero
-$ lipo -create lib-armv7/liblmdb.a lib-x86_64/liblmdb.a lib-armv8-a/liblmdb.a -output lib-ios/liblmdb.a
-```
 ## Thanks
 
 Thanks to Bakhtiyor K. in Uzbekistan for helping us during the development process.
